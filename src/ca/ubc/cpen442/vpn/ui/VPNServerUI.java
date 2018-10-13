@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class VPNServerUI extends Frame implements ActionListener {
 
@@ -21,7 +22,7 @@ public class VPNServerUI extends Frame implements ActionListener {
         // Initialize the server
         String listenPort = JOptionPane.showInputDialog("On which local TCP port do you want to listen for incoming connections?");
         server = new Server(Integer.parseInt(listenPort));
-        console.log("Constructed server, listening on port " + listenPort);
+        console.log("Constructed server with listening TCP port " + listenPort);
         // Set up the UI
         setLayout(new FlowLayout());
         setTitle("CPEN 442 VPN Server");
@@ -29,6 +30,12 @@ public class VPNServerUI extends Frame implements ActionListener {
         whichPortLabel = new Label("TODO: implement this");
         add(whichPortLabel);
         setVisible(true);
+        console.log("Will start listening.");
+        try {
+            server.listen();
+        } catch (IOException e) {
+            console.log("Server exception: " + e.getLocalizedMessage());
+        }
     }
 
     public static void main(String[] args) {

@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6990b164-8672-43ac-a295-3a3712d47356" name="Default Changelist" comment="Add networking singleton">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/ui/VPNClientUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/ui/VPNClientUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/model/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/model/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/net/NetworkBrain.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/ui/VPNServerUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/ui/VPNServerUI.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -34,14 +35,14 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="8" />
-          <entry key="java" value="1455" />
+          <entry key="java" value="1967" />
           <entry key="md" value="328" />
           <entry key="txt" value="28" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="1455" />
+          <entry key="JAVA" value="1967" />
           <entry key="Markdown" value="328" />
           <entry key="PLAIN_TEXT" value="36" />
         </counts>
@@ -50,14 +51,14 @@
         <counts>
           <entry key="LICENSE" value="1" />
           <entry key="iml" value="1" />
-          <entry key="java" value="8" />
+          <entry key="java" value="9" />
           <entry key="md" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="IDEA_MODULE" value="1" />
-          <entry key="JAVA" value="8" />
+          <entry key="JAVA" value="9" />
           <entry key="Markdown" value="1" />
           <entry key="PLAIN_TEXT" value="1" />
         </counts>
@@ -87,14 +88,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/ui/VPNServerUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="163">
-              <caret line="18" column="8" selection-start-line="18" selection-start-column="8" selection-end-line="19" selection-end-column="37" />
+            <state relative-caret-position="283">
+              <caret line="38" column="67" lean-forward="true" selection-start-line="38" selection-start-column="67" selection-end-line="38" selection-end-column="67" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/src.zip!/javax/swing/JOptionPane.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="57">
+              <caret line="633" column="23" selection-start-line="633" selection-start-column="23" selection-end-line="633" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -114,9 +124,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/model/Server.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="6" column="43" selection-start-line="6" selection-start-column="43" selection-end-line="6" selection-end-column="43" />
+            <state relative-caret-position="324">
+              <caret line="27" column="93" lean-forward="true" selection-start-line="27" selection-start-column="93" selection-end-line="27" selection-end-column="93" />
               <folding>
+                <element signature="imports" expanded="true" />
                 <element signature="e#176#177#0" expanded="true" />
                 <element signature="e#209#210#0" expanded="true" />
               </folding>
@@ -124,11 +135,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/ui/VPNClientUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="14" column="24" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="24" />
+            <state relative-caret-position="228">
+              <caret line="21" column="25" lean-forward="true" selection-start-line="21" selection-start-column="25" selection-end-line="21" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -146,15 +157,6 @@
                 <caret line="7" column="33" lean-forward="true" selection-start-line="7" selection-start-column="33" selection-end-line="7" selection-end-column="33" />
               </first_editor>
               <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/net/NetworkBrain.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="17" column="5" lean-forward="true" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -185,11 +187,11 @@
         <option value="$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/VPNStarter.java" />
         <option value="$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/ui/VPNStarter.java" />
         <option value="$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/model/Crypto.java" />
-        <option value="$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/model/Server.java" />
-        <option value="$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/ui/VPNServerUI.java" />
         <option value="$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/ui/VPNConsoleUI.java" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/ui/VPNClientUI.java" />
+        <option value="$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/model/Server.java" />
+        <option value="$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/ui/VPNServerUI.java" />
       </list>
     </option>
   </component>
@@ -228,13 +230,6 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="vpn" type="462c0819:PsiDirectoryNode" />
               <item name="model" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="442VPN" type="b2602c69:ProjectViewProjectNode" />
-              <item name="442VPN" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="vpn" type="462c0819:PsiDirectoryNode" />
-              <item name="net" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="442VPN" type="b2602c69:ProjectViewProjectNode" />
@@ -375,10 +370,39 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/ui/VPNConsoleUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="16" column="25" lean-forward="true" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="25" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/net/NetworkBrain.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="17" column="5" lean-forward="true" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/ui/VPNClientUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="21" column="25" lean-forward="true" selection-start-line="21" selection-start-column="25" selection-end-line="21" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/model/Server.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="27" column="93" lean-forward="true" selection-start-line="27" selection-start-column="93" selection-end-line="27" selection-end-column="93" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#176#177#0" expanded="true" />
+            <element signature="e#209#210#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -392,41 +416,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/ui/VPNConsoleUI.java">
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home/src.zip!/javax/swing/JOptionPane.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="16" column="25" lean-forward="true" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="25" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/model/Server.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="6" column="43" selection-start-line="6" selection-start-column="43" selection-end-line="6" selection-end-column="43" />
-          <folding>
-            <element signature="e#176#177#0" expanded="true" />
-            <element signature="e#209#210#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="57">
+          <caret line="633" column="23" selection-start-line="633" selection-start-column="23" selection-end-line="633" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/ui/VPNServerUI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
-          <caret line="18" column="8" selection-start-line="18" selection-start-column="8" selection-end-line="19" selection-end-column="37" />
+        <state relative-caret-position="283">
+          <caret line="38" column="67" lean-forward="true" selection-start-line="38" selection-start-column="67" selection-end-line="38" selection-end-column="67" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ca/ubc/cpen442/vpn/ui/VPNClientUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="14" column="24" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="24" />
         </state>
       </provider>
     </entry>
