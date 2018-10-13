@@ -7,8 +7,13 @@ import java.awt.event.ActionListener;
 public class VPNClientUI extends Frame implements ActionListener {
 
     private Label scQuestionLabel;
+    private VPNConsoleUI console;
 
     public VPNClientUI() {
+        // Firstly, display the log console
+        console = new VPNConsoleUI();
+        console.log("Client is starting. Will ask for remote IP and port.");
+        // Set up the UI
         setLayout(new FlowLayout());
         setTitle("CPEN 442 VPN Client");
         setSize(800, 600);
