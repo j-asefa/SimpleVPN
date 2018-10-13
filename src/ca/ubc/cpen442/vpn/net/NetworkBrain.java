@@ -1,4 +1,4 @@
-package ca.ubc.cpen442.vpn;
+package ca.ubc.cpen442.vpn.net;
 
 /**
  * A Singleton that handles all network operations.
