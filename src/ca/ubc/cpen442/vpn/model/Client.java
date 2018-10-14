@@ -5,7 +5,9 @@ import ca.ubc.cpen442.vpn.ui.VPNConsoleUI;
 import javax.crypto.KeyAgreement;
 import javax.crypto.interfaces.DHPublicKey;
 import javax.crypto.spec.DHParameterSpec;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.net.Socket;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
@@ -38,8 +40,15 @@ public class Client {
      * @throws IOException In case of a networking error.
      */
     public void connect() throws IOException {
-        byte[] serverPublicKeyBytes = null; // placeholder
-        // TODO connect to the client and obtain the actual serverPublicKeyBytes
+        // TODO connect to the server and obtain the actual serverPublicKeyBytes
+        Socket s = new Socket(remoteIP, remotePort);
+        DataInputStream din = new DataInputStream(s.getInputStream());
+        int numBytes = din.readInt(); // read number of public key bytes
+        consoleUI.log("Received public key length: " + numBytes);
+        byte[] serverPublicKeyBytes = new byte[numBytes];
+        din.readFully(serverPublicKeyBytes, 0, serverPublicKeyBytes.length); // read the message
+
+        consoleUI.log("Received public key bytes from the server");
         KeyFactory keyFactory = null;
         try {
             keyFactory = KeyFactory.getInstance("DH");
@@ -53,35 +62,48 @@ public class Client {
         try {
             serverPublicKey = keyFactory.generatePublic(x509KeySpec);
         } catch (InvalidKeySpecException e) {
-            // should never get called
+            // should never be called
+            e.printStackTrace();
         }
         assert serverPublicKey != null;
         DHParameterSpec params = ((DHPublicKey) serverPublicKey).getParams();
-        System.out.println("Client will generate its keypair based on the received server public key");
+        String publicKeyHash = Crypto.getMD5Hash(serverPublicKey.getEncoded());
+        String y = ((DHPublicKey) serverPublicKey).getY().toString();
+        String g = ((DHPublicKey) serverPublicKey).getParams().getG().toString();
+        String p = ((DHPublicKey) serverPublicKey).getParams().getP().toString();
+        consoleUI.log("Received Server Public Key hash is " + publicKeyHash);
+        consoleUI.log("Received Y ends in " + y.substring(y.length() - 5));
+        consoleUI.log("Received G ends in " + g.substring(g.length() - 5));
+        consoleUI.log("Received P ends in " + p.substring(p.length() - 5));
+        consoleUI.log("Client will generate its keypair based on the received server public key");
         KeyPairGenerator keyPairGenerator = null;
         try {
             keyPairGenerator = KeyPairGenerator.getInstance("DH");
         } catch (NoSuchAlgorithmException e) {
-            // should never get called
+            // should never be called
+            e.printStackTrace();
         }
         assert keyPairGenerator != null;
         try {
             keyPairGenerator.initialize(params);
         } catch (InvalidAlgorithmParameterException e) {
-            // should never get called
+            // should never be called
+            e.printStackTrace();
         }
         KeyPair clientKeyPair = keyPairGenerator.generateKeyPair();
         KeyAgreement clientKeyAgreement = null;
         try {
             clientKeyAgreement = KeyAgreement.getInstance("DH");
         } catch (NoSuchAlgorithmException e) {
-            // should never get called
+            // should never be called
+            e.printStackTrace();
         }
         assert clientKeyAgreement != null;
         try {
             clientKeyAgreement.init(clientKeyPair.getPrivate());
         } catch (InvalidKeyException e) {
-            // should never get called
+            // should never be called
+            e.printStackTrace();
         }
         // this public key is ready to be sent to the server
         byte[] encoded = clientKeyPair.getPublic().getEncoded();

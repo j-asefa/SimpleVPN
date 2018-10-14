@@ -33,11 +33,13 @@ public class VPNStarter extends Frame implements ActionListener {
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource().equals(serverButton)) {
             System.out.println("Will start server.");
+            setVisible(false);
             VPNServerUI serverUI = new VPNServerUI();
         } else if (evt.getSource().equals(clientButton)) {
             System.out.println("Will start client.");
+            setVisible(false);
             VPNClientUI clientUI = new VPNClientUI();
         }
-        setVisible(false);
+
     }
 }

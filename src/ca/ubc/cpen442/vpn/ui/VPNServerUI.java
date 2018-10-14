@@ -29,15 +29,21 @@ public class VPNServerUI extends Frame implements ActionListener {
         setTitle("CPEN 442 VPN Server");
         setSize(800, 600);
         setVisible(true);
-        console.log("Will start listening.");
-        server.initialize();
-        try {
-            server.listen();
-        } catch (IOException e) {
-            console.log("Server exception: " + e.getLocalizedMessage());
-        } catch (ServerNotInitializedException e) {
-            console.log("Attempted to listen before initializing server");
-        }
+
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                console.log("Will initialize the server.");
+                server.initialize();
+                try {
+                    server.listen();
+                } catch (IOException e) {
+                    console.log("Server exception: " + e.getLocalizedMessage());
+                } catch (ServerNotInitializedException e) {
+                    console.log("Attempted to listen before initializing server");
+                }
+            }
+        });
+        t.start();
     }
 
     public static void main(String[] args) {
