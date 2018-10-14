@@ -1,6 +1,7 @@
 package ca.ubc.cpen442.vpn.ui;
 
 import ca.ubc.cpen442.vpn.model.Server;
+import ca.ubc.cpen442.vpn.model.exceptions.ServerNotInitializedException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,21 +21,22 @@ public class VPNServerUI extends Frame implements ActionListener {
         // Firstly, display the log console
         console = new VPNConsoleUI();
         // Initialize the server
-        String listenPort = JOptionPane.showInputDialog("On which local TCP port do you want to listen for incoming connections?");
-        server = new Server(Integer.parseInt(listenPort));
+        String listenPort = JOptionPane.showInputDialog("On which local TCP port do you want to listen for incoming connections?", "32888");
+        server = new Server(Integer.parseInt(listenPort), console);
         console.log("Constructed server with listening TCP port " + listenPort);
         // Set up the UI
         setLayout(new FlowLayout());
         setTitle("CPEN 442 VPN Server");
         setSize(800, 600);
-        whichPortLabel = new Label("TODO: implement this");
-        add(whichPortLabel);
         setVisible(true);
         console.log("Will start listening.");
+        server.initialize();
         try {
             server.listen();
         } catch (IOException e) {
             console.log("Server exception: " + e.getLocalizedMessage());
+        } catch (ServerNotInitializedException e) {
+            console.log("Attempted to listen before initializing server");
         }
     }
 
