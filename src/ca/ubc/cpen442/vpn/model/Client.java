@@ -3,14 +3,18 @@ package ca.ubc.cpen442.vpn.model;
 import ca.ubc.cpen442.vpn.ui.VPNConsoleUI;
 
 import javax.crypto.KeyAgreement;
+import javax.crypto.ShortBufferException;
 import javax.crypto.interfaces.DHPublicKey;
 import javax.crypto.spec.DHParameterSpec;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
+
+import static sun.security.pkcs11.wrapper.Functions.toHexString;
 
 public class Client {
     private VPNConsoleUI consoleUI;
@@ -73,7 +77,6 @@ public class Client {
         String p = ((DHPublicKey) serverPublicKey).getParams().getP().toString();
         consoleUI.log("Received Server Public Key hash is " + publicKeyHash);
         consoleUI.log("Received Y ends in " + y.substring(y.length() - 5));
-        consoleUI.log("Received G is " + g);
         consoleUI.log("Received P ends in " + p.substring(p.length() - 5));
         consoleUI.log("Client will generate its keypair based on the received server public key");
         KeyPairGenerator keyPairGenerator = null;
@@ -107,5 +110,29 @@ public class Client {
         }
         // this public key is ready to be sent to the server
         byte[] encoded = clientKeyPair.getPublic().getEncoded();
+        consoleUI.log("Sending public key to server");
+
+        DataOutputStream outputStream = new DataOutputStream(s.getOutputStream());
+        // Send the length of the public key in bytes
+        outputStream.writeInt(encoded.length);
+        // Send the public key bytes
+        outputStream.write(encoded);
+
+        try {
+            clientKeyAgreement.doPhase(serverPublicKey, true);
+        } catch (InvalidKeyException e){
+            e.printStackTrace();
+        }
+
+        int sharedSecLen = din.readInt();
+        byte[] clientSharedSec = new byte[sharedSecLen];
+        try {
+            int clientSharedSecLen = clientKeyAgreement.generateSecret(clientSharedSec, 0);
+        } catch (ShortBufferException e){
+            e.printStackTrace();
+        }
+        int hexSecLen = toHexString(clientSharedSec).length();
+        consoleUI.log("Final key ending in " + toHexString(clientSharedSec).substring(hexSecLen - 5) + " created");
+
     }
 }

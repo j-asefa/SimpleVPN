@@ -4,14 +4,16 @@ import ca.ubc.cpen442.vpn.model.exceptions.ServerNotInitializedException;
 import ca.ubc.cpen442.vpn.ui.VPNConsoleUI;
 
 import javax.crypto.KeyAgreement;
+import javax.crypto.ShortBufferException;
 import javax.crypto.interfaces.DHPublicKey;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.security.InvalidKeyException;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
+import java.security.*;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
+
+import static sun.security.pkcs11.wrapper.Functions.toHexString;
 
 public class Server {
     private VPNConsoleUI console;
@@ -92,5 +94,48 @@ public class Server {
         // Send the public key bytes
         outputStream.write(serverKeyPair.getPublic().getEncoded());
         console.log("Sent public key over the socket");
+
+
+        // Begin waiting for client public key
+        DataInputStream din = new DataInputStream(connectionSocket.getInputStream());
+        int numBytes = din.readInt(); // read number of public key bytes
+        console.log("Received public key length: " + numBytes);
+        byte[] serverPublicKeyBytes = new byte[numBytes];
+        din.readFully(serverPublicKeyBytes, 0, serverPublicKeyBytes.length); // read the message
+
+        // Use client public key to generate secret
+        X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(serverPublicKeyBytes);
+        KeyFactory keyFactory = null;
+        try {
+            keyFactory = KeyFactory.getInstance("DH");
+        } catch (NoSuchAlgorithmException e) {
+            // should never be called
+            e.printStackTrace();
+        }
+        assert keyFactory != null;
+        PublicKey clientPublicKey = null;
+        try {
+            clientPublicKey = keyFactory.generatePublic(x509KeySpec);
+        } catch (InvalidKeySpecException e) {
+            // should never be called
+            e.printStackTrace();
+        }
+        assert clientPublicKey != null;
+
+        try {
+        keyAgreement.doPhase(clientPublicKey, true);
+        } catch (InvalidKeyException e){
+            e.printStackTrace();
+        }
+
+        byte[] sharedSecret = keyAgreement.generateSecret();
+        int sharedSecLen = sharedSecret.length;
+        int hexSecLen = toHexString(sharedSecret).length();
+
+        // Send the length of the shared secret in bytes
+        outputStream.writeInt(sharedSecLen);
+        outputStream.write("Key size sent".getBytes());
+
+        console.log("Final key ending in " + toHexString(sharedSecret).substring(hexSecLen - 5) + " created");
     }
 }
