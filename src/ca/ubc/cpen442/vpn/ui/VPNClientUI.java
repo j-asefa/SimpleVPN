@@ -14,8 +14,9 @@ public class VPNClientUI extends Frame implements ActionListener {
 
     private Label scQuestionLabel;
     private VPNConsoleUI console;
-
-
+    protected JTextField textbox;
+    protected JButton sendbtn;
+    
     public VPNClientUI() {
         // Firstly, display the log console
         console = new VPNConsoleUI();
@@ -26,8 +27,20 @@ public class VPNClientUI extends Frame implements ActionListener {
         setLayout(new FlowLayout());
         setTitle("CPEN 442 VPN Client");
         setSize(800, 600);
-        scQuestionLabel = new Label("TODO: implement this");
+        
+        
+        scQuestionLabel = new Label("Enter text to be sent to server: ");
         add(scQuestionLabel);
+        
+        //Add editable text area
+        textbox = new JTextField(50);
+        add(textbox);
+        
+        // Add button to send text to server
+        sendbtn = new JButton("Send");
+        sendbtn.addActionListener(this);
+        add(sendbtn);
+        
         setVisible(true);
         client = new Client(ip, Integer.parseInt(port), console);
         try {
@@ -44,6 +57,19 @@ public class VPNClientUI extends Frame implements ActionListener {
     // ActionEvent handler - Called back upon button-click.
     @Override
     public void actionPerformed(ActionEvent evt) {
-
+    	
+    	String secretMessage  = textbox.getText();
+    	secretMessage = secretMessage + '\n';
+    	if(evt.getSource() == sendbtn) {
+    		try {
+				client.sendMessage(secretMessage);
+			} catch (IOException e) {
+				//Something bad has gone down, my dude
+				e.printStackTrace();
+			}
+    		//Clear the box
+    		textbox.setText("");
+    	}
+    	
     }
 }

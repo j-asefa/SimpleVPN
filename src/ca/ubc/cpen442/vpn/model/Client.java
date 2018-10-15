@@ -9,7 +9,9 @@ import javax.crypto.spec.DHParameterSpec;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
@@ -20,13 +22,14 @@ public class Client {
     private VPNConsoleUI consoleUI;
     private String remoteIP;
     private int remotePort; // The TCP port to which the client will connect.
-
+    private Socket s;
     /**
      * Initializes the Client.
      *
      * @param remoteIP   The server IP we are connecting to.
      * @param remotePort The server port we are connecting to.
      * @param consoleUI  A Console window where we can log messages.
+     * @param s 
      */
     public Client(String remoteIP, int remotePort, VPNConsoleUI consoleUI) {
         consoleUI.log("Constructing client...");
@@ -45,7 +48,7 @@ public class Client {
      */
     public void connect() throws IOException {
         // TODO connect to the server and obtain the actual serverPublicKeyBytes
-        Socket s = new Socket(remoteIP, remotePort);
+        s = new Socket(remoteIP, remotePort);
         DataInputStream din = new DataInputStream(s.getInputStream());
         int numBytes = din.readInt(); // read number of public key bytes
         consoleUI.log("Received public key length: " + numBytes);
@@ -134,5 +137,22 @@ public class Client {
         int hexSecLen = toHexString(clientSharedSec).length();
         consoleUI.log("Final key ending in " + toHexString(clientSharedSec).substring(hexSecLen - 5) + " created");
 
+    }
+    
+    /*
+     * Send the secret message to client after encrypting
+     */
+    public void sendMessage(String message) throws IOException {
+    	OutputStreamWriter osw;
+    	//TODO encrypt this
+    
+    	//send to server
+        try {
+            osw =new OutputStreamWriter(s.getOutputStream(), "UTF-8");
+            osw.write(message, 0, message.length());
+        } catch (IOException e) {
+        	 e.printStackTrace();
+        }
+        //TODO log the process
     }
 }
