@@ -67,13 +67,13 @@ public class Client {
         }
         assert serverPublicKey != null;
         DHParameterSpec params = ((DHPublicKey) serverPublicKey).getParams();
-        String publicKeyHash = Crypto.getMD5Hash(serverPublicKey.getEncoded());
+        String publicKeyHash = Crypto.getSHA2Hash(serverPublicKey.getEncoded());
         String y = ((DHPublicKey) serverPublicKey).getY().toString();
         String g = ((DHPublicKey) serverPublicKey).getParams().getG().toString();
         String p = ((DHPublicKey) serverPublicKey).getParams().getP().toString();
         consoleUI.log("Received Server Public Key hash is " + publicKeyHash);
         consoleUI.log("Received Y ends in " + y.substring(y.length() - 5));
-        consoleUI.log("Received G ends in " + g.substring(g.length() - 5));
+        consoleUI.log("Received G is " + g);
         consoleUI.log("Received P ends in " + p.substring(p.length() - 5));
         consoleUI.log("Client will generate its keypair based on the received server public key");
         KeyPairGenerator keyPairGenerator = null;
