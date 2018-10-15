@@ -51,7 +51,7 @@ public class Server {
         serverKeyPair = keyPairGenerator.generateKeyPair();
         console.log("Server DH KeyPair generated");
         byte[] encodedPublicKey = serverKeyPair.getPublic().getEncoded();
-        String publicKeyHash = Crypto.getMD5Hash(encodedPublicKey);
+        String publicKeyHash = Crypto.getSHA2Hash(encodedPublicKey);
         String y = ((DHPublicKey) serverKeyPair.getPublic()).getY().toString();
         String g = ((DHPublicKey) serverKeyPair.getPublic()).getParams().getG().toString();
         String p = ((DHPublicKey) serverKeyPair.getPublic()).getParams().getP().toString();
@@ -75,7 +75,6 @@ public class Server {
         }
         // public key is now ready to be sent over the network
         console.log("Server is ready to send (y, p, g)");
-
 
     }
 
