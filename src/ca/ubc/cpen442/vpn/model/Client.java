@@ -144,12 +144,17 @@ public class Client {
      */
     public void sendMessage(String message) throws IOException {
     	OutputStreamWriter osw;
+    	DataOutputStream dos;
     	//TODO encrypt this
     
     	//send to server
         try {
             osw =new OutputStreamWriter(s.getOutputStream(), "UTF-8");
-            osw.write(message, 0, message.length());
+            dos=new DataOutputStream(s.getOutputStream());
+            consoleUI.log("Sending the length and the message");
+            dos.writeInt(message.length());
+            osw.write(message);
+            
         } catch (IOException e) {
         	 e.printStackTrace();
         }
