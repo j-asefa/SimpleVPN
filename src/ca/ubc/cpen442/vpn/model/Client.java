@@ -3,33 +3,29 @@ package ca.ubc.cpen442.vpn.model;
 import ca.ubc.cpen442.vpn.ui.VPNConsoleUI;
 
 import javax.crypto.KeyAgreement;
-import javax.crypto.ShortBufferException;
 import javax.crypto.interfaces.DHPublicKey;
 import javax.crypto.spec.DHParameterSpec;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
-
-import static sun.security.pkcs11.wrapper.Functions.toHexString;
 
 public class Client {
     private VPNConsoleUI consoleUI;
     private String remoteIP;
     private int remotePort; // The TCP port to which the client will connect.
     private Socket s;
+
     /**
      * Initializes the Client.
      *
      * @param remoteIP   The server IP we are connecting to.
      * @param remotePort The server port we are connecting to.
      * @param consoleUI  A Console window where we can log messages.
-     * @param s 
+     * @param s
      */
     public Client(String remoteIP, int remotePort, VPNConsoleUI consoleUI) {
         consoleUI.log("Constructing client...");
@@ -123,35 +119,28 @@ public class Client {
 
         try {
             clientKeyAgreement.doPhase(serverPublicKey, true);
-        } catch (InvalidKeyException e){
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
         }
-
-        int sharedSecLen = din.readInt();
-        byte[] clientSharedSec = new byte[sharedSecLen];
-        try {
-            int clientSharedSecLen = clientKeyAgreement.generateSecret(clientSharedSec, 0);
-        } catch (ShortBufferException e){
-            e.printStackTrace();
-        }
-        int hexSecLen = toHexString(clientSharedSec).length();
-        consoleUI.log("Final key ending in " + toHexString(clientSharedSec).substring(hexSecLen - 5) + " created");
 
     }
-    
+
     /*
      * Send the secret message to client after encrypting
      */
     public void sendMessage(String message) throws IOException {
-    	OutputStreamWriter osw;
-    	//TODO encrypt this
-    
-    	//send to server
+        DataOutputStream dos;
+        //TODO encrypt this
+
+        //send to server
         try {
-            osw =new OutputStreamWriter(s.getOutputStream(), "UTF-8");
-            osw.write(message, 0, message.length());
+            dos = new DataOutputStream(s.getOutputStream());
+            consoleUI.log("Sending the length and the message");
+            dos.writeInt(message.getBytes().length);
+            dos.write(message.getBytes());
+
         } catch (IOException e) {
-        	 e.printStackTrace();
+            e.printStackTrace();
         }
         //TODO log the process
     }

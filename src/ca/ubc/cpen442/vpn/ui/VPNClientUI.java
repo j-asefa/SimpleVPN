@@ -63,7 +63,6 @@ public class VPNClientUI extends Frame implements ActionListener {
     public void actionPerformed(ActionEvent evt) {
     	
     	String secretMessage  = textbox.getText();
-    	secretMessage = secretMessage + '\n';
     	if(evt.getSource() == sendbtn) {
     		try {
 				client.sendMessage(secretMessage);

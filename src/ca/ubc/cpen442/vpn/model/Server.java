@@ -4,7 +4,6 @@ import ca.ubc.cpen442.vpn.model.exceptions.ServerNotInitializedException;
 import ca.ubc.cpen442.vpn.ui.VPNConsoleUI;
 
 import javax.crypto.KeyAgreement;
-import javax.crypto.ShortBufferException;
 import javax.crypto.interfaces.DHPublicKey;
 import java.io.*;
 import java.net.ServerSocket;
@@ -12,8 +11,6 @@ import java.net.Socket;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
-
-import static sun.security.pkcs11.wrapper.Functions.toHexString;
 
 public class Server {
     private VPNConsoleUI console;
@@ -84,9 +81,10 @@ public class Server {
         }
         recvSocket = new ServerSocket(listeningPort);
         // DO NOTHING FOR NOW
-        Socket connectionSocket = recvSocket.accept();
-        BufferedReader inFromClient =
-                new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+        
+        
+    	Socket connectionSocket = recvSocket.accept();
+    	DataInputStream din = new DataInputStream(connectionSocket.getInputStream());
         // outputStream can be used to send data back to the client
         DataOutputStream outputStream = new DataOutputStream(connectionSocket.getOutputStream());
         // Send the length of the public key in bytes
@@ -95,9 +93,8 @@ public class Server {
         outputStream.write(serverKeyPair.getPublic().getEncoded());
         console.log("Sent public key over the socket");
 
-
         // Begin waiting for client public key
-        DataInputStream din = new DataInputStream(connectionSocket.getInputStream());
+        
         int numBytes = din.readInt(); // read number of public key bytes
         console.log("Received public key length: " + numBytes);
         byte[] serverPublicKeyBytes = new byte[numBytes];
@@ -128,14 +125,26 @@ public class Server {
             e.printStackTrace();
         }
 
-        byte[] sharedSecret = keyAgreement.generateSecret();
-        int sharedSecLen = sharedSecret.length;
-        int hexSecLen = toHexString(sharedSecret).length();
+        String sharedSecret = "ABCDEF";
 
         // Send the length of the shared secret in bytes
-        outputStream.writeInt(sharedSecLen);
-        outputStream.write("Key size sent".getBytes());
+        outputStream.writeInt(sharedSecret.getBytes().length);
+        // Send the shared secret bytes
+        // TODO: this must be encrypted, I guess
+        outputStream.write(sharedSecret.getBytes());
 
-        console.log("Final key ending in " + toHexString(sharedSecret).substring(hexSecLen - 5) + " created");
+        console.log("Sent shared secret");
+        while (!connectionSocket.isClosed()) { // TODO needs to be fixed
+            console.log("Waiting for an incoming message");
+            // receive a message and decode it
+            int length = din.readInt();
+            console.log("Incoming message: length is " + length);
+            BufferedReader br = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+            char[] cbuf = new char[length];
+            br.read(cbuf, 0, length);
+            String message = new String(cbuf);
+            console.log("Incoming message: message is " + message);
+        }
+        
     }
 }
