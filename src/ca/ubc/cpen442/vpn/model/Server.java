@@ -84,9 +84,10 @@ public class Server {
         }
         recvSocket = new ServerSocket(listeningPort);
         // DO NOTHING FOR NOW
-        Socket connectionSocket = recvSocket.accept();
-        BufferedReader inFromClient =
-                new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+        
+        
+    	Socket connectionSocket = recvSocket.accept();
+    	DataInputStream din = new DataInputStream(connectionSocket.getInputStream());
         // outputStream can be used to send data back to the client
         DataOutputStream outputStream = new DataOutputStream(connectionSocket.getOutputStream());
         // Send the length of the public key in bytes
@@ -97,7 +98,7 @@ public class Server {
 
 
         // Begin waiting for client public key
-        DataInputStream din = new DataInputStream(connectionSocket.getInputStream());
+        
         int numBytes = din.readInt(); // read number of public key bytes
         console.log("Received public key length: " + numBytes);
         byte[] serverPublicKeyBytes = new byte[numBytes];
@@ -137,5 +138,17 @@ public class Server {
         outputStream.write("Key size sent".getBytes());
 
         console.log("Final key ending in " + toHexString(sharedSecret).substring(hexSecLen - 5) + " created");
+        
+        while (!recvSocket.isClosed()) { // TODO fixme
+        	// receive a message and decode it
+        	int length = din.readInt();
+        	BufferedReader br = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+        	char[] cbuf = new char[length];
+        	br.read(cbuf, 0, length);
+        	String message = new String(cbuf);
+        	console.log("" + message);
+        }
+    
+        
     }
 }
