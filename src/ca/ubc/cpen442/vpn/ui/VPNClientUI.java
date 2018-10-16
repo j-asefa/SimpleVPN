@@ -42,7 +42,11 @@ public class VPNClientUI extends Frame implements ActionListener {
         add(sendbtn);
         
         setVisible(true);
-        client = new Client(ip, Integer.parseInt(port), console);
+        if (port != null)
+            client = new Client(ip, Integer.parseInt(port), console);
+        else
+            return;
+
         try {
             client.connect();
         } catch (IOException e) {

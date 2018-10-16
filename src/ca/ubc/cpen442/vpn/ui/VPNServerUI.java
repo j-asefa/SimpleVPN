@@ -22,7 +22,11 @@ public class VPNServerUI extends Frame implements ActionListener {
         console = new VPNConsoleUI();
         // Initialize the server
         String listenPort = JOptionPane.showInputDialog("On which local TCP port do you want to listen for incoming connections?", "32888");
-        server = new Server(Integer.parseInt(listenPort), console);
+        if (listenPort != null)
+            server = new Server(Integer.parseInt(listenPort), console);
+        else
+            return;
+
         console.log("Constructed server with listening TCP port " + listenPort);
         // Set up the UI
         setLayout(new FlowLayout());

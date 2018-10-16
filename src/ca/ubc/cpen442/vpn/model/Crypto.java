@@ -3,6 +3,8 @@ package ca.ubc.cpen442.vpn.model;
 import javax.xml.bind.DatatypeConverter;
 import java.security.*;
 import javax.crypto.*;
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 
 public class Crypto {
 
@@ -30,7 +32,7 @@ public class Crypto {
         return DatatypeConverter.printHexBinary(md.digest()).toUpperCase();
     }
 
-    public static byte[] getHMAC (String string, SecretKey key) throws InvalidKeyException {
+    public static byte[] getHMAC (String string) throws InvalidKeyException {
         // Generate secret key for HmacSHA256
         KeyGenerator kg = null;
         try {
@@ -47,8 +49,31 @@ public class Crypto {
         } catch (NoSuchAlgorithmException e) {
             // Should not be called
         }
-
+        SecretKey key = kg.generateKey();
         mac.init(key);
         return mac.doFinal(string.getBytes());
+    }
+
+    public byte[] encryptAES(byte[] plainText, byte[] key) throws Exception
+    {
+        SecretKeySpec secretKey = new SecretKeySpec(key, "AES");
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+
+        return cipher.doFinal(plainText);
+    }
+
+    /**
+     * Decrypts the given byte array
+     *
+     * @param cipherText The data to decrypt
+     */
+    public byte[] decryptAES(byte[] cipherText, byte[] key) throws Exception
+    {
+        SecretKeySpec secretKey = new SecretKeySpec(key, "AES");
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(Cipher.DECRYPT_MODE, secretKey);
+
+        return cipher.doFinal(cipherText);
     }
 }
