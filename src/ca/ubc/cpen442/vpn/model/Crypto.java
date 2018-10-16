@@ -54,7 +54,13 @@ public class Crypto {
         return mac.doFinal(string.getBytes());
     }
 
-    public byte[] encryptAES(byte[] plainText, byte[] key) throws Exception
+    /**
+     * Uses AES to encrypt the given byte array using the given key
+     *
+     * @param cipherText The data to decrypt
+     * @param key key to use for AES encryption.
+     */
+    public static byte[] encryptAES(byte[] plainText, byte[] key) throws Exception
     {
         SecretKeySpec secretKey = new SecretKeySpec(key, "AES");
         Cipher cipher = Cipher.getInstance("AES");
@@ -64,11 +70,12 @@ public class Crypto {
     }
 
     /**
-     * Decrypts the given byte array
+     * Uses AES to decrypt the given byte array using the given key.
      *
      * @param cipherText The data to decrypt
+     * @param key key to use for AES decryption.
      */
-    public byte[] decryptAES(byte[] cipherText, byte[] key) throws Exception
+    public static byte[] decryptAES(byte[] cipherText, byte[] key) throws Exception
     {
         SecretKeySpec secretKey = new SecretKeySpec(key, "AES");
         Cipher cipher = Cipher.getInstance("AES");
